@@ -46,6 +46,7 @@ export default function NotesPage() {
   }, [darkMode]);
 
   const handleSend = async () => {
+    console.log("Send clicked");
     if (!input.trim()) return;
 
     const { data, error } = await supabase
