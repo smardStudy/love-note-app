@@ -1,11 +1,20 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/app/lib/supabaseClient';
+
 
 type Note = {
   sender: string;
   message: string;
   time: string;
+};
+
+type SupabaseNote = {
+  id: string;
+  user: string;
+  text: string;
+  created_at: string;
 };
 
 export default function NotesPage() {
@@ -36,18 +45,37 @@ export default function NotesPage() {
     document.body.style.backgroundColor = darkMode ? '#121212' : '#fdf6f9';
   }, [darkMode]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    const newNote: Note = {
-      sender: user!,
-      message: input.trim(),
-      time: new Date().toLocaleString(),
-    };
-    const updatedNotes = [...notes, newNote];
-    setNotes(updatedNotes);
-    localStorage.setItem('loveNotes', JSON.stringify(updatedNotes));
-    setInput('');
+
+    const { data, error } = await supabase
+      .from('notes')
+      .insert([
+        {
+          user: user!,
+          text: input.trim(),
+        },
+      ])
+      .select(); // 👈 Ensures we get the inserted row back
+
+    if (error) {
+      console.error('Error sending note:', error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      const note: SupabaseNote = data[0]; // 👈 Tell TS what it is
+      const newNote: Note = {
+        sender: note.user,
+        message: note.text,
+        time: new Date(note.created_at).toLocaleString(),
+      };
+      setNotes((prev) => [...prev, newNote]);
+      setInput('');
+    }
   };
+
+
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');

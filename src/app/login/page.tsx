@@ -13,9 +13,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [darkMode, setDarkMode] = useState(false);
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
 
   useEffect(() => {
     document.body.style.backgroundColor = darkMode ? '#121212' : '#f2f2f2';
@@ -32,15 +31,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div style={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      backgroundColor: darkMode ? '#121212' : '#f2f2f2',
-      color: darkMode ? '#fff' : '#000',
-      transition: 'all 0.3s ease',
-    }}>
+    <div
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        backgroundColor: darkMode ? '#121212' : '#f2f2f2',
+        color: darkMode ? '#fff' : '#000',
+        transition: 'all 0.3s ease',
+      }}
+    >
       {/* Dark Mode Toggle */}
       <button
         onClick={() => setDarkMode(!darkMode)}
@@ -60,21 +63,33 @@ export default function LoginPage() {
       </button>
 
       {/* App Title */}
-      <h1 style={{ marginTop: '80px', fontSize: '3rem' }}>Love Note App 💌</h1>
+      <h1
+        style={{
+          marginBottom: '30px',
+          fontSize: '2rem',
+          textAlign: 'center',
+          color: '#ff69b4',
+        }}
+      >
+        Love Note App 💌
+      </h1>
 
       {/* Login Box */}
-      <div style={{
-        marginTop: '40px',
-        backgroundColor: darkMode ? '#1e1e1e' : '#fff',
-        padding: '40px',
-        borderRadius: '12px',
-        boxShadow: darkMode
-          ? '0 0 20px rgba(255, 255, 255, 0.1)'
-          : '0 0 20px rgba(0, 0, 0, 0.1)',
-        minWidth: '300px',
-        textAlign: 'center'
-      }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          backgroundColor: darkMode ? '#1e1e1e' : '#fff',
+          padding: '32px',
+          borderRadius: '12px',
+          boxShadow: darkMode
+            ? '0 0 20px rgba(255, 255, 255, 0.1)'
+            : '0 0 20px rgba(0, 0, 0, 0.1)',
+          textAlign: 'center',
+        }}
+      >
         <form onSubmit={handleLogin}>
+          {/* User ID input */}
           <input
             type="text"
             placeholder="User ID"
@@ -88,45 +103,49 @@ export default function LoginPage() {
               borderRadius: '6px',
               border: '1px solid #ccc',
               backgroundColor: darkMode ? '#2c2c2c' : '#fff',
-              color: darkMode ? '#fff' : '#000'
+              color: darkMode ? '#fff' : '#000',
+              fontSize: '1rem',
             }}
           />
-        <div style={{ position: 'relative', width: '100%' }}>
-        <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-            width: '100%',
-            padding: '12px 40px 12px 12px',
-            marginBottom: '20px',
-            borderRadius: '6px',
-            border: '1px solid #ccc',
-            backgroundColor: darkMode ? '#2c2c2c' : '#fff',
-            color: darkMode ? '#fff' : '#000'
-            }}
-        />
-        <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            style={{
-            position: 'absolute',
-            top: '50%',
-            right: '10px',
-            transform: 'translateY(-50%)',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            color: darkMode ? '#fff' : '#000',
-            fontSize: '0.9rem'
-            }}
-        >
-            {showPassword ? <EyeOff /> : <Eye />}
-        </button>
-        </div>
 
+          {/* Password input with show/hide */}
+          <div style={{ position: 'relative', width: '100%' }}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: '12px 40px 12px 12px',
+                marginBottom: '20px',
+                borderRadius: '6px',
+                border: '1px solid #ccc',
+                backgroundColor: darkMode ? '#2c2c2c' : '#fff',
+                color: darkMode ? '#fff' : '#000',
+                fontSize: '1rem',
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                right: '10px',
+                transform: 'translateY(-50%)',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: darkMode ? '#fff' : '#000',
+              }}
+            >
+              {showPassword ? <EyeOff /> : <Eye />}
+            </button>
+          </div>
+
+          {/* Submit button */}
           <button
             type="submit"
             style={{
@@ -136,11 +155,18 @@ export default function LoginPage() {
               border: 'none',
               borderRadius: '6px',
               cursor: 'pointer',
+              fontSize: '1rem',
             }}
           >
             Login
           </button>
-          {error && <p style={{ color: 'red', marginTop: '12px' }}>{error}</p>}
+
+          {/* Error message */}
+          {error && (
+            <p style={{ color: 'red', marginTop: '12px', fontSize: '0.9rem' }}>
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
