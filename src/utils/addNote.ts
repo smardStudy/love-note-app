@@ -1,18 +1,24 @@
-import { supabase } from '../lib/supabaseClient'
+import { clientPromise } from '../lib/mongodb';
 
 export async function addNote(user: string, text: string) {
   if (!user || !text) {
-    console.error('User or text is empty')
-    return
+    console.error('User or text is empty');
+    return;
   }
 
-  const { data, error } = await supabase.from('notes').insert([
-    { user, text }
-  ])
+  try {
+    const client = await clientPromise;
+    const db = client.db('love-notes-db'); // change to your DB name
+    const collection = db.collection('notes');
 
-  if (error) {
-    console.error('Insert error:', error.message)
-  } else {
-    console.log('Note added:', data)
+    const result = await collection.insertOne({
+      user,
+      text,
+      time: new Date().toISOString(),
+    });
+
+    console.log('Note added:', result);
+  } catch (error) {
+    console.error('MongoDB insert error:', error);
   }
 }
